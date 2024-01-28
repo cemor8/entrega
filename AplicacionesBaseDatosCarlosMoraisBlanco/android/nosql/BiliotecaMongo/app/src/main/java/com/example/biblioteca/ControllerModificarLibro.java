@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -95,6 +96,11 @@ public class ControllerModificarLibro extends AppCompatActivity {
         }
         boolean cambiado = false;
         if(!this.modificarTitulo.getText().toString().isEmpty()){
+            Optional<Libro> libroRepetidoOptional = this.libros.stream().filter(libro -> libro.getTitulo().equalsIgnoreCase(this.modificarTitulo.getText().toString())).findAny();
+            if(libroRepetidoOptional.isPresent()){
+                Toast.makeText(this,"Libro con Id Existente",Toast.LENGTH_LONG).show();
+                return;
+            }
             this.libroSeleccionado.setTitulo(this.modificarTitulo.getText().toString());
             cambiado = true;
         }
@@ -128,7 +134,7 @@ public class ControllerModificarLibro extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                System.out.println("error");
             }
         });
 
